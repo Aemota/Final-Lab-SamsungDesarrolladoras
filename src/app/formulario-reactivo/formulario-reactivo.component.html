@@ -1,0 +1,109 @@
+<div class="formulario">
+  <form (ngSubmit)="registrar()" [formGroup]="contactform">
+    <br>
+    <h1 class="h1">FORMULARIO</h1>
+    <h2 class="h2">NUEVOS SOCIOS/AS</h2>
+
+  <!-- NOMBRE -->
+
+    <mat-form-field appearance="fill" class="inputs" hintLabel="Min 3 caracteres">
+      <mat-label>Nombre</mat-label>
+      <input matInput type="text" autocomplete="off" required name="nombre" formControlName="nombre">
+
+       <!-- Control de errores -->
+      <mat-error *ngIf="contactform.get('nombre')?.touched && contactform.get('nombre')?.errors?.['required']">Este campo es obligatorio</mat-error>
+      <mat-error *ngIf="contactform.get('nombre')?.errors?.['minlength']">Inserta al menos
+        {{contactform.get('nombre')?.errors?.['minlength']?.requiredLength}} caracteres</mat-error>
+    </mat-form-field>
+
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+  <!-- APELLIDOS -->
+
+    <mat-form-field appearance="fill" class="inputs" hintLabel="Min 3 caracteres">
+      <mat-label>Apellidos</mat-label>
+      <input matInput autocomplete="off" required name="apellidos" formControlName="apellidos">
+
+       <!-- Control de errores -->
+      <mat-error *ngIf="contactform.get('apellidos')?.touched && contactform.get('apellidos')?.errors?.['required']">
+        Este campo es obligatorio</mat-error>
+      <mat-error *ngIf="contactform.get('apellidos')?.errors?.['minlength']">Inserta al menos
+        {{contactform.get('apellidos')?.errors?.['minlength']?.requiredLength}} caracteres</mat-error>
+    </mat-form-field>
+    <br><br>
+
+
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+  <!-- DNI -->
+
+    <mat-form-field hintLabel="9 caracteres" appearance="fill" class="inputs">
+      <mat-label>DNI</mat-label>
+      <input matInput required autocomplete="off" name="dni" formControlName="dni" placeholder="Ejemplo: 00002211X">
+
+       <!-- Control de errores -->
+      <mat-error *ngIf="contactform.get('dni')?.touched && contactform.get('dni')?.errors?.['required']">Este campo es obligatorio</mat-error>
+    </mat-form-field>
+    <br><br>
+
+  <!-- TELÉFONO -->
+
+    <mat-form-field hintLabel="9 dígitos" appearance="fill" class="inputs">
+      <mat-label>Teléfono</mat-label>
+      <input matInput type="tel" required name="telefono" formControlName="telefono" placeholder="Ex: 111223344">
+
+      <!-- Control de errores -->
+      <mat-error *ngIf="contactform.get('telefono')?.touched && contactform.get('telefono')?.errors?.['required']">Este campo es obligatorio</mat-error>
+      <mat-error *ngIf="contactform.get('telefono')?.touched && contactform.get('telefono')?.errors?.['pattern']">Solo se admiten 9 dígitos</mat-error>
+    </mat-form-field>
+
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+  <!-- SEXO -->
+
+    <mat-form-field appearance="fill" class="inputs">
+      <mat-label>Sexo</mat-label>
+      <select matNativeControl required name="sexo" formControlName="sexo">
+        <option disabled selected></option>
+        <option value="Hombre">Hombre</option>
+        <option value="Mujer">Mujer</option>
+      </select>
+      <mat-hint align="end">Selecciona una opción</mat-hint>
+
+       <!-- Control de errores -->
+      <mat-error *ngIf="contactform.get('sexo')?.touched && contactform.get('sexo')?.errors?.['required']">Este campo es obligatorio</mat-error>
+    </mat-form-field><br>
+
+
+
+  <!-- BOTÓN REGISTRAR -->
+
+    <mat-label>
+      <button type="submit" mat-raised-button [disabled]="!contactform.valid" color="primary">Registrar</button>
+    </mat-label>
+    <br><br>
+
+  </form>
+</div>
+
+
+<!-- REGISTROS -->
+
+<mat-list>
+  <mat-list-item *ngFor="let s of socios">
+    <div class="div-datos">
+      <span> Nombre: {{ s == newSocio ? contactform.value.nombre : s.nombre }} | </span>
+      <span> Apellidos: {{ s == newSocio ? contactform.value.apellidos : s.apellidos }} | </span>
+      <span> DNI: {{ s == newSocio ? contactform.value.dni : s.dni }} | </span>
+      <span> Teléfono: {{ s == newSocio ? contactform.value.telefono : s.telefono }} | </span>
+      <span> Sexo: {{ s == newSocio ? contactform.value.sexo : s.sexo }} | </span>
+      <span> Nº Socio: {{ s == newSocio ? contactform.value.numSocio : s.numSocio }} </span>
+
+    </div>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <div>
+      <button mat-raised-button color="primary" (click)="s == newSocio ? finModificar($event, s) : modificar($event, s)">{{ s == newSocio ? "Hecho" : "Modificar" }}</button> &nbsp;
+      <button mat-raised-button color="warn" (click)="eliminar($event, s)">Eliminar</button>
+  </div>
+  </mat-list-item>
+</mat-list>
